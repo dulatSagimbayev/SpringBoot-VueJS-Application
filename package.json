@@ -18,8 +18,12 @@
     "@babel/core": "^7.12.1",
     "@babel/preset-env": "^7.12.1",
     "babel-loader": "^8.1.0",
+    "css-loader": "3.6.0",
     "vue-loader": "^15.9.3",
+    "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.12",
+    "vuetify": "^2.3.14",
+    "vuetify-loader": "^1.6.0",
     "webpack": "^5.1.2",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"

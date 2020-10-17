@@ -12,8 +12,8 @@ module.exports = {
     allowedHosts: [
       'localhost:8080'
     ],
-    //stats:'errors-only',
-    //clientLogLevel: 'error',
+    stats:'errors-only',
+    clientLogLevel: 'error',
   },
   module: {
     rules: [
@@ -30,8 +30,15 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader'
-      }
-    ]
+      },
+      {
+        test: /\.css$/i,
+        use:[
+            'vue-style-loader',
+            'css-loader'
+        ],
+      },
+    ],
   },
   plugins: [
     new VueLoaderPlugin()

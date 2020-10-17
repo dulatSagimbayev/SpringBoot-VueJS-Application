@@ -2,6 +2,10 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
     <title>Network</title>
     <!-- версия для разработки, включает отображение полезных предупреждений в консоли -->
     <script th:inline="javascript">
@@ -9,7 +13,7 @@
     </script>
 </head>
 <body>
-<h3>Network</h3>
+
 <div id="app"></div>
 <script th:src="${isDevMode}? 'http://localhost:8000/main.js' : '/js/main.js'">
 

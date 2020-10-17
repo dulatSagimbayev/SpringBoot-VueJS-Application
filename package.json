@@ -1,0 +1,25 @@
+{
+  "name": "network",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dulatSagimbayev/SpringBoot-VueJS-Application.git",
+  "author": "dulatSagimbayev <dulatSagimbayev@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "dependencies": {
+    "vue": "^2.6.12",
+    "vue-resource": "^1.5.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "vue-loader": "^15.9.3",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^5.1.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  }
+}

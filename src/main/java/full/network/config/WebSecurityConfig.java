@@ -2,7 +2,6 @@ package full.network.config;
 
 import full.network.domain.User;
 import full.network.repository.UserDetailsRepository;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor;
 import org.springframework.context.annotation.Bean;

@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "messages")
@@ -21,6 +22,15 @@ public class Message {
     private Long id;
     @JsonView(Views.IdName.class)
     private String text;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonView(Views.FullMessage.class)
+    private User author;
+
+    @OneToMany(mappedBy = "message",cascade = CascadeType.ALL)
+    @JsonView(Views.FullMessage.class)
+    private List<Comment> comments;
 
     @Column(updatable = false)
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

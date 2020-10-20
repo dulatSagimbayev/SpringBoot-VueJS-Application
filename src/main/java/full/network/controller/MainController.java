@@ -1,6 +1,10 @@
 package full.network.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import full.network.domain.User;
+import full.network.domain.Views;
 import full.network.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,21 +20,29 @@ import java.util.HashMap;
 @RequestMapping("/")
 public class MainController {
     private final MessageRepository messageRepo;
+    private final ObjectWriter writer;
 
     @Value("${spring.profiles.active}")
     private String profile;
 
     @Autowired
-    public MainController(MessageRepository messageRepo) {
+    public MainController(MessageRepository messageRepo, ObjectMapper mapper)
+    {
         this.messageRepo = messageRepo;
+        this.writer= mapper.setConfig(mapper.getSerializationConfig())
+                .writerWithView(Views.FullMessage.class);
     }
 
     @GetMapping
-    public String main(Model model, @AuthenticationPrincipal User user) {
+    public String main(Model model, @AuthenticationPrincipal User user) throws JsonProcessingException {
         HashMap<Object, Object> data = new HashMap<>();
         if(user!=null) {
             data.put("profile", user);
-            data.put("messages", messageRepo.findAll());
+
+            String  messages =writer.writeValueAsString(messageRepo.findAll());
+            model.addAttribute("messages",messages);
+        }else{
+            model.addAttribute("messages","[]");
         }
         model.addAttribute("frontendData", data);
         model.addAttribute("isDevMode","dev".equals(profile));

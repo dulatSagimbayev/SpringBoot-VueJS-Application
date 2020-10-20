@@ -1,7 +1,9 @@
 package full.network.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -12,10 +14,14 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="usr")
 @Data
+@ToString(of = {"id", "name"})
 public class User implements Serializable {
     @Id
+    @JsonView(Views.IdName.class)
     private String id;
+    @JsonView(Views.IdName.class)
     private String name;
+    @JsonView(Views.IdName.class)
     private String userpic;
     private String email;
     private String gender;

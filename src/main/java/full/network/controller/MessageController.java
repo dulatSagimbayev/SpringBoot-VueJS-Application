@@ -2,6 +2,7 @@ package full.network.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import full.network.domain.Message;
+import full.network.domain.User;
 import full.network.domain.Views;
 import full.network.dto.EventType;
 import full.network.dto.MetaDto;
@@ -13,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -52,9 +54,11 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message createMessage(@RequestBody Message message) throws IOException {
+    public Message createMessage(@RequestBody Message message,
+                                 @AuthenticationPrincipal User user) throws IOException {
         message.setCreationDate(LocalDateTime.now());
         fillMeta(message);
+        message.setAuthor(user);
         Message updatedMessage = messageRepository.save(message);
         webSocketSender.accept(EventType.CREATE,updatedMessage);
         return updatedMessage;

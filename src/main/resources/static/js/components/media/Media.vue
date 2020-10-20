@@ -12,10 +12,10 @@
             </v-card-title>
         </v-flex>
         <v-flex v-if="type === 'image'" xs12 sm6 offset-sm3>
-            <a :href="message.link">
-                <v-img v-if="message.linkCover" :src="message.linkCover" aspect-ratio="2.75"></v-img>
-                {{message.link}}
-            </a>
+<!--            <a :href="message.link">-->
+<!--                <v-img v-if="message.linkCover" :src="message.linkCover" aspect-ratio="2.75"></v-img>-->
+<!--                {{message.link}}-->
+<!--            </a>-->
         </v-flex>
         <v-flex v-if="type === 'youtube'" xs12 sm6 offset-sm3>
             <you-tube :src="message.link"></you-tube>

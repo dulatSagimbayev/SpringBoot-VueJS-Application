@@ -3,7 +3,8 @@
         <v-text-field
                 label="New Message"
                 placeholder="Write something"
-                v-model="text" />
+                v-model="text"
+                @keyup.enter="save"/>
         <v-btn @click="save" >Save</v-btn>
     </v-layout>
 </template>

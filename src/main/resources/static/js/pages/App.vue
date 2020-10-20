@@ -29,7 +29,10 @@
     export default {
         computed: mapState(['profile']),
         methods:{
-            ...mapMutations(['addMessageMutation','updateMessageMutation','removeMessageMutation']),
+            ...mapMutations(['addMessageMutation',
+            'updateMessageMutation',
+            'removeMessageMutation',
+            'addCommentMutation']),
             showMessages(){
                 this.$router.push('/')
             },
@@ -39,7 +42,7 @@
         },
         created() {
             addHandler(data => {
-                if(data.objectType=='MESSAGE'){
+                if(data.objectType==='MESSAGE'){
                     switch(data.eventType){
                         case 'CREATE':
                             this.addMessageMutation(data.body)
@@ -53,7 +56,15 @@
                         default:
                             console.error('Event type is not valid')
                     }
-                }
+                }else if (data.objectType === 'COMMENT') {
+                    switch (data.eventType) {
+                        case 'CREATE':
+                            this.addCommentMutation(data.body)
+                            break
+                        default:
+                            console.error(`Looks like the event type if unknown "${data.eventType}"`)
+                    }
+              }
                 else{
                     console.error('Object type is not valid')
                 }

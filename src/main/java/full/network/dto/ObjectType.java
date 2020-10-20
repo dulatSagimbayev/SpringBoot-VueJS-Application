@@ -1,5 +1,5 @@
 package full.network.dto;
 
 public enum ObjectType {
-    MESSAGE
+    MESSAGE,COMMENT
 }

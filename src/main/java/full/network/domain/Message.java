@@ -25,7 +25,7 @@ public class Message {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonView(Views.FullMessage.class)
+    @JsonView({Views.FullMessage.class})
     private User author;
 
     @OneToMany(mappedBy = "message",cascade = CascadeType.ALL)

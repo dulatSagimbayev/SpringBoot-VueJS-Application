@@ -28,17 +28,16 @@
             }
         },
         methods: {
-            ...mapActions(['addMessageAction','updateMessageAction']),
+            ...mapActions(['addMessageAction', 'updateMessageAction']),
             save() {
                 const message = {
                     id: this.id,
                     text: this.text
-                 }
-
+                }
                 if (this.id) {
                     this.updateMessageAction(message)
                 } else {
-                    this.addMessageAction( message)
+                    this.addMessageAction(message)
                 }
                 this.text = ''
                 this.id = ''

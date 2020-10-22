@@ -10,7 +10,7 @@
             <v-spacer></v-spacer>
             <v-btn color="secondary"
                    medium
-                   outlined v-if="profile" :disabled="$route.path === '/profile'" @click="showProfile">{{profile.name}}</v-btn>
+                   outlined v-if="profile" :disabled="$route.path === '/user'" @click="showProfile">{{profile.name}}</v-btn>
             <v-btn v-if="profile" icon href="/logout">
                 <v-icon>exit_to_app</v-icon>
             </v-btn>
@@ -26,6 +26,7 @@
 <script>
     import {mapState,mapMutations} from 'vuex'
     import { addHandler } from 'util/ws'
+
     export default {
         computed: mapState(['profile']),
         methods:{
@@ -33,11 +34,12 @@
             'updateMessageMutation',
             'removeMessageMutation',
             'addCommentMutation']),
+
             showMessages(){
                 this.$router.push('/')
             },
             showProfile(){
-                this.$router.push('/profile')
+                this.$router.push('/user')
             }
         },
         created() {

@@ -2,27 +2,30 @@ package full.network.service;
 
 import full.network.domain.Message;
 import full.network.domain.User;
+import full.network.domain.UserSubscription;
 import full.network.domain.Views;
 import full.network.dto.EventType;
 import full.network.dto.MessagePageDto;
 import full.network.dto.MetaDto;
 import full.network.dto.ObjectType;
 import full.network.repository.MessageRepository;
+import full.network.repository.UserSubscriptionRepository;
 import full.network.util.WebSocketSender;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -31,14 +34,15 @@ public class MessageService {
 
     private static Pattern URL_REGEX = Pattern.compile(URL_PATTERN, Pattern.CASE_INSENSITIVE);
     private static Pattern IMG_REGEX = Pattern.compile(IMAGE_PATTERN, Pattern.CASE_INSENSITIVE);
-
+    private final UserSubscriptionRepository userSubscriptionRepository;
     private final MessageRepository messageRepository;
     private final BiConsumer<EventType, Message> webSocketSender;
 
 
-    public MessageService(MessageRepository messageRepository, WebSocketSender webSocketSender) {
+    public MessageService(UserSubscriptionRepository userSubscriptionRepository, MessageRepository messageRepository, WebSocketSender webSocketSender) {
+        this.userSubscriptionRepository = userSubscriptionRepository;
         this.messageRepository = messageRepository;
-        this.webSocketSender = webSocketSender.getSender(ObjectType.MESSAGE, Views.IdName.class);
+        this.webSocketSender = webSocketSender.getSender(ObjectType.MESSAGE, Views.FullMessage.class);
     }
     private void fillMeta(Message message) throws IOException {
         String text=message.getText();
@@ -84,7 +88,7 @@ public class MessageService {
     }
 
     public Message update(Message messageFromDb, Message message,User user) throws IOException {
-        BeanUtils.copyProperties(message,messageFromDb,"id");
+        messageFromDb.setText(message.getText());
         fillMeta(messageFromDb);
         messageFromDb.setAuthor(user);
 
@@ -103,8 +107,15 @@ public class MessageService {
         return updatedMessage;
     }
 
-    public MessagePageDto findAll(Pageable pageable) {
-        Page<Message> page = messageRepository.findAll(pageable);
+    public MessagePageDto findForUser(Pageable pageable,User user) {
+        List<User> channels = userSubscriptionRepository.findBySubscriber(user)
+                .stream()
+                .map(UserSubscription::getChannel)
+                .collect(Collectors.toList());
+
+        channels.add(user);
+
+        Page<Message> page = messageRepository.findByAuthorIn(channels,pageable);
         return new MessagePageDto(
                 page.getContent(),
                 pageable.getPageNumber(),

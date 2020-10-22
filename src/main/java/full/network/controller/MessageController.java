@@ -29,9 +29,10 @@ public class MessageController {
     @GetMapping
     @JsonView(Views.FullMessage.class)
     public MessagePageDto list(
+            @AuthenticationPrincipal User user,
             @PageableDefault(size = MESSAGES_PP, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return messageService.findAll(pageable);
+        return messageService.findForUser(pageable, user);
     }
 
     @GetMapping("{id}")
@@ -40,6 +41,7 @@ public class MessageController {
     }
 
     @PostMapping
+    @JsonView(Views.FullMessage.class)
     public Message createMessage(@RequestBody Message message,
                                  @AuthenticationPrincipal User user) throws IOException {
         return messageService.create(message,user);
@@ -47,15 +49,25 @@ public class MessageController {
 
 
     @PutMapping("{id}")
+    @JsonView(Views.FullMessage.class)
     public Message update(@PathVariable("id") Message messageFromDb,
                           @RequestBody Message message,
                           @AuthenticationPrincipal User user)
             throws IOException {
-        return messageService.update(messageFromDb,message,user);
+        if(user.equals(messageFromDb.getAuthor())){
+            return messageService.update(messageFromDb,message,user);
+        }
+        else{
+            return messageFromDb;
+        }
+
     }
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") Message message){
-        messageService.delete(message);
+    public void delete(@PathVariable("id") Message message,
+                       @AuthenticationPrincipal User user){
+        if(user.equals(message.getAuthor())){
+            messageService.delete(message);
+        }
     }
 
 

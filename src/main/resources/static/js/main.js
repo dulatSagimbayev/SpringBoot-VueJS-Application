@@ -10,7 +10,7 @@ import 'vuetify/dist/vuetify.min.css'
 import Vuetify from 'vuetify'
 
 
-if (frontendData.profile) {
+if (profile) {
     connect()
 }
 
